@@ -17,51 +17,51 @@ CREATE TABLE `files` -- создать таблицу для файлов
 );
 
 -- М:М
-DROP TABLE IF EXISTS `dialogs`;
-CREATE TABLE `dialogs` -- создать таблицу диалогов
+DROP TABLE IF EXISTS `chats`;
+CREATE TABLE `chats` -- создать таблицу бесед
 (
 	id SERIAL PRIMARY KEY, 
 	admin_user_id BIGINT UNSIGNED NOT NULL,
 	name VARCHAR(100) NOT NULL, -- название группы
 	created_at DATETIME DEFAULT NOW(),
 	main_message TEXT DEFAULT NULL COMMENT 'Закреплённое сообщение',
-	INDEX dialogs_name_idx(name), -- ищем по названию
+	INDEX chats_name_idx(name), -- ищем по названию
 	FOREIGN KEY (admin_user_id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE -- администратор из таблицы users
 );
 
-DROP TABLE IF EXISTS dialog_messages; 
-CREATE TABLE dialog_messages -- сообщения диалога
+DROP TABLE IF EXISTS chat_messages; 
+CREATE TABLE chat_messages -- сообщения беседы
 (
 	message_id BIGINT UNSIGNED NOT NULL,
-	dialog_id BIGINT UNSIGNED NOT NULL,
+	chat_id BIGINT UNSIGNED NOT NULL,
 	is_main_message BIT DEFAULT 0,
-	PRIMARY KEY (dialog_id, message_id),
-    FOREIGN KEY (dialog_id) REFERENCES `dialogs`(id) ON UPDATE CASCADE ON DELETE CASCADE,
+	PRIMARY KEY (chat_id, message_id),
+    FOREIGN KEY (chat_id) REFERENCES `chats`(id) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY (message_id) REFERENCES messages(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-DROP TABLE IF EXISTS dialog_users; -- пользователи диалога
-CREATE TABLE dialog_users
+DROP TABLE IF EXISTS chat_users; -- пользователи беседы
+CREATE TABLE chat_users
 (	
-	dialog_id BIGINT UNSIGNED NOT NULL,
+	chat_id BIGINT UNSIGNED NOT NULL,
 	user_id BIGINT UNSIGNED NOT NULL,
-	PRIMARY KEY (dialog_id, user_id),
-	FOREIGN KEY (dialog_id) REFERENCES `dialogs`(id) ON UPDATE CASCADE ON DELETE CASCADE,
+	PRIMARY KEY (chat_id, user_id),
+	FOREIGN KEY (chat_id) REFERENCES `chats`(id) ON UPDATE CASCADE ON DELETE CASCADE,
 	FOREIGN KEY (user_id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-DROP TABLE IF EXISTS dialog_users_message; -- сообщения пользователей диалога
-CREATE TABLE dialog_users_message
+DROP TABLE IF EXISTS chat_users_message; -- сообщения пользователей беседы
+CREATE TABLE chat_users_message
 ( 
-	dialog_users_id BIGINT UNSIGNED NOT NULL,
-	dialog_messages_id BIGINT UNSIGNED NOT NULL,
-	PRIMARY KEY (dialog_messages_id, dialog_users_id),
-	FOREIGN KEY (dialog_messages_id) REFERENCES dialog_messages(message_id) ON UPDATE CASCADE ON DELETE CASCADE,
-	FOREIGN KEY (dialog_users_id) REFERENCES dialog_users(user_id) ON UPDATE CASCADE ON DELETE CASCADE
+	chat_users_id BIGINT UNSIGNED NOT NULL,
+	chat_messages_id BIGINT UNSIGNED NOT NULL,
+	PRIMARY KEY (chat_messages_id, chat_users_id),
+	FOREIGN KEY (chat_messages_id) REFERENCES chat_messages(message_id) ON UPDATE CASCADE ON DELETE CASCADE,
+	FOREIGN KEY (chat_users_id) REFERENCES chat_users(user_id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 -- 1:1
 DROP TABLE IF EXISTS wallet;
-CREATE TABLE wallet -- кошелёк для попукоп в соцсети
+CREATE TABLE wallet -- кошелёк для покупок в соцсети
 (
 	id SERIAL PRIMARY KEY,
 	owner_id BIGINT UNSIGNED NOT NULL, 
@@ -93,4 +93,5 @@ CREATE TABLE audio -- аудиозаписи
 	FOREIGN KEY (media_id) REFERENCES media(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-ALTER TABLE `profiles` ADD CONSTRAINT fk_audio_id FOREIGN KEY (audio_id) REFERENCES audio(id) ON UPDATE CASCADE ON DELETE SET NULL; -- внешний ключ для аудио
+ALTER TABLE `profiles` ADD CONSTRAINT fk_audio_id 
+FOREIGN KEY (audio_id) REFERENCES audio(id) ON UPDATE CASCADE ON DELETE SET NULL; -- внешний ключ для аудио
