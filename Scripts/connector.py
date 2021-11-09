@@ -1,4 +1,4 @@
-# https://rtfm.co.ua/python-rabota-s-mysql-s-ispolzovaniem-mysqldb/
+# https://pythonpip.ru/examples/operatsiya-vstavki-mysql-na-python-dobavlenie-dannyh-v-tablitsu
 from MySQLdb import connect
 
 # создаём подключение с помощью метода Connect
