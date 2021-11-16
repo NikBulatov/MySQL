@@ -41,4 +41,22 @@ CREATE TABLE IF NOT EXISTS requests
     type_request ENUM ('Service', 'Question'),
     message_id   BIGINT UNSIGNED NOT NULL COMMENT 'Сообщение пользователя',
     FOREIGN KEY (message_id) REFERENCES messages (id) ON UPDATE CASCADE ON DELETE CASCADE
-);
+) COMMENT 'Заявка';
+
+DROP TABLE IF EXISTS catalog;
+CREATE TABLE IF NOT EXISTS catalog
+(
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255)
+) COMMENT 'Справочник';
+
+DROP TABLE IF EXISTS data_catalog;
+CREATE TABLE IF NOT EXISTS data_catalog
+(
+    id SERIAL PRIMARY KEY,
+    value VARCHAR(255),
+    sequence BIGINT UNSIGNED,
+    value_print VARCHAR(255),
+    id_catalog BIGINT UNSIGNED,
+    FOREIGN KEY (id_catalog) REFERENCES catalog(id) -- триггеры нужны!
+) COMMENT 'Данные справочника';
