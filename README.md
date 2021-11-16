@@ -1,5 +1,5 @@
 # MySQL
 
-## Python Scripts brunch
+## Python Scripts branch
 
-Examples of code to work with MySQL DB through Pyhton
+Examples of code to work with MySQL DB through Python
