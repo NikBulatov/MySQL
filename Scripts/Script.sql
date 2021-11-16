@@ -39,6 +39,6 @@ CREATE TABLE IF NOT EXISTS requests
 (
     id           SERIAL PRIMARY KEY,
     type_request ENUM ('Service', 'Question'),
-    message_id   BIGINT UNSIGNED NOT NULL COMMENT 'Сообщение пользоватля',
+    message_id   BIGINT UNSIGNED NOT NULL COMMENT 'Сообщение пользователя',
     FOREIGN KEY (message_id) REFERENCES messages (id) ON UPDATE CASCADE ON DELETE CASCADE
 );
