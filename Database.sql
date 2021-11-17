@@ -55,7 +55,7 @@ CREATE TABLE friend_requests
     requested_at      DATETIME DEFAULT NOW(),                                                  -- время создания запроса
     updated_at        DATETIME ON UPDATE NOW(),                                                -- время изменения статуса запроса
     PRIMARY KEY (initiator_user_id, target_user_id), /*первичный составной ключ от инициатора к получателю,
-	но если получатль будет отравлять, то будет уже две заявки с одинаковой парой людей*/
+	но если получатель будет отравлять, то будет уже две заявки с одинаковой парой людей*/
     FOREIGN KEY (initiator_user_id) REFERENCES users (id) ON UPDATE CASCADE ON DELETE CASCADE, -- внешний ключ
     FOREIGN KEY (target_user_id) REFERENCES users (id) ON UPDATE CASCADE ON DELETE CASCADE
 );
@@ -230,7 +230,7 @@ CREATE TABLE wallet -- кошелёк для покупок в соцсети
     owner_id   BIGINT UNSIGNED NOT NULL,
     created_at DATETIME        DEFAULT NOW(),
     balance    DOUBLE UNSIGNED DEFAULT 0,
-    currency   VARCHAR(100)    NOT NULL UNIQUE COMMENT 'Валюта',
+    currency   VARCHAR(100)    DEFAULT 'RUB' NOT NULL UNIQUE COMMENT 'Валюта',
     is_deleted BIT             DEFAULT 0 COMMENT 'Существует ли кошелёк',
     FOREIGN KEY (owner_id) REFERENCES users (id) ON UPDATE CASCADE ON DELETE CASCADE
 );
