@@ -557,7 +557,7 @@ CREATE TABLE `wallet` (
   `owner_id` bigint(20) unsigned NOT NULL,
   `created_at` datetime DEFAULT current_timestamp(),
   `balance` double unsigned DEFAULT 0,
-  `currency` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT 'RUB' NOT NULL COMMENT 'Валюта',
+  `currency` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Валюта',
   `is_deleted` bit(1) DEFAULT b'0' COMMENT 'Существует ли кошелёк',
   PRIMARY KEY (`id`),
   UNIQUE KEY `currency` (`currency`),

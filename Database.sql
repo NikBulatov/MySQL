@@ -230,7 +230,7 @@ CREATE TABLE wallet -- кошелёк для покупок в соцсети
     owner_id   BIGINT UNSIGNED NOT NULL,
     created_at DATETIME        DEFAULT NOW(),
     balance    DOUBLE UNSIGNED DEFAULT 0,
-    currency   VARCHAR(100)    DEFAULT 'RUB' NOT NULL UNIQUE COMMENT 'Валюта',
+    currency   VARCHAR(100)    DEFAULT 'RUB' NOT NULL COMMENT 'Валюта',
     is_deleted BIT             DEFAULT 0 COMMENT 'Существует ли кошелёк',
     FOREIGN KEY (owner_id) REFERENCES users (id) ON UPDATE CASCADE ON DELETE CASCADE
 );
