@@ -87,6 +87,25 @@ CREATE TABLE IF NOT EXISTS requests
     FOREIGN KEY (message_id) REFERENCES messages (id) ON UPDATE CASCADE ON DELETE CASCADE
 ) COMMENT 'Заявка';
 
+DROP TABLE IF EXISTS type_service;
+CREATE TABLE IF NOT EXISTS type_service
+(
+    service_id SERIAL PRIMARY KEY,
+    type_name  VARCHAR(255) NOT NULL,
+
+    FOREIGN KEY (service_id) REFERENCES requests (id) ON UPDATE CASCADE ON DELETE CASCADE -- правильно?
+);
+
+DROP TABLE IF EXISTS services;
+CREATE TABLE IF NOT EXISTS services
+(
+    request_id SERIAL PRIMARY KEY,
+    type_name BIGINT UNSIGNED NOT NULL,
+    message_id BIGINT UNSIGNED,
+
+    FOREIGN KEY (type_name) REFERENCES type_service(type_name) ON UPDATE CASCADE ON DELETE NO ACTION,
+    FOREIGN KEY (request_id) REFERENCES requests(id) ON UPDATE CASCADE ON DELETE NO ACTION
+);
 
 DROP TABLE IF EXISTS photo_albums;
 CREATE TABLE photo_albums
