@@ -2,12 +2,27 @@ DROP DATABASE IF EXISTS site;
 CREATE DATABASE IF NOT EXISTS site;
 USE site;
 
-DROP TABLE IF EXISTS user_type;
-CREATE TABLE IF NOT EXISTS user_type
+DROP TABLE IF EXISTS catalog;
+CREATE TABLE IF NOT EXISTS catalog
 (
-    id        SERIAL PRIMARY KEY,
-    name_type ENUM ('Client', 'Master', 'Developer') DEFAULT 'Client'
-) COMMENT 'Тип пользователя';
+    id   SERIAL PRIMARY KEY COMMENT 'Номер справочника',
+    name VARCHAR(255) COMMENT 'Название справочника'
+) COMMENT 'Справочник';
+
+DROP TABLE IF EXISTS catalog_data;
+CREATE TABLE IF NOT EXISTS catalog_data
+(
+    id          SERIAL PRIMARY KEY,
+    id_catalog  BIGINT UNSIGNED COMMENT 'Номер справочника',
+    id_catalog_data BIGINT UNSIGNED COMMENT 'Рекурсивный ключ',
+    value       VARCHAR(255) COMMENT 'Значение данных',
+    sequence    BIGINT UNSIGNED COMMENT 'Порядковый номер',
+    value_print VARCHAR(255) COMMENT 'Значение данных для вывода',
+
+    FOREIGN KEY (id_catalog_data) REFERENCES catalog_data(id),
+    FOREIGN KEY (id_catalog) REFERENCES catalog (id) -- триггеры нужны!
+) COMMENT 'Данные справочника';
+
 
 DROP TABLE IF EXISTS users;
 CREATE TABLE IF NOT EXISTS users
@@ -16,14 +31,14 @@ CREATE TABLE IF NOT EXISTS users
     user_type_id BIGINT UNSIGNED                    NOT NULL,
     firstname    VARCHAR(255)                       NOT NULL COMMENT 'Имя пользователя',
     lastname     VARCHAR(255)                       NOT NULL COMMENT 'Фамилия пользователя',
-    phone        VARCHAR(255)                       NOT NULL,
-    email        VARCHAR(255)                       NOT NULL,
-    created_at   DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    updated_at   DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    phone        VARCHAR(255)                       NOT NULL COMMENT 'Номер телефона',
+    email        VARCHAR(255)                       NOT NULL COMMENT 'Электронная почта пользователя',
+    created_at   DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL COMMENT 'Дата создания',
+    updated_at   DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL COMMENT 'Дата обновления информации',
     INDEX phone_idx (phone),
     INDEX email_idx (email),
 
-    FOREIGN KEY (user_type_id) REFERENCES user_type (id) ON UPDATE CASCADE ON DELETE CASCADE -- возможно что надо иначе RESTRICT
+    FOREIGN KEY (user_type_id) REFERENCES catalog_data (id) -- триггеры
 );
 
 DROP TABLE IF EXISTS profiles;
@@ -35,17 +50,10 @@ CREATE TABLE IF NOT EXISTS profiles
     photo_id   BIGINT UNSIGNED,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     hometown   VARCHAR(100),
+
     FOREIGN KEY (user_id) REFERENCES users (id) ON UPDATE CASCADE ON DELETE CASCADE
 ) COMMENT 'Профиль';
 
-DROP TABLE IF EXISTS media_types;
-CREATE TABLE media_types
-(
-    id         SERIAL PRIMARY KEY,
-    name       VARCHAR(255),
-    created_at DATETIME DEFAULT NOW(),
-    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
 
 DROP TABLE IF EXISTS media;
 CREATE TABLE media
@@ -53,7 +61,7 @@ CREATE TABLE media
     id            SERIAL PRIMARY KEY,
     media_type_id BIGINT UNSIGNED,
     user_id       BIGINT UNSIGNED NOT NULL,
-    body          text,
+    -- body          text,
     filename      VARCHAR(255),
     size          INT,
     metadata      JSON,
@@ -61,7 +69,7 @@ CREATE TABLE media
     updated_at    DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
     FOREIGN KEY (user_id) REFERENCES users (id) ON UPDATE CASCADE ON DELETE CASCADE,
-    FOREIGN KEY (media_type_id) REFERENCES media_types (id) ON UPDATE CASCADE ON DELETE SET NULL
+    FOREIGN KEY (media_type_id) REFERENCES catalog_data (id) -- триггеры
 );
 
 DROP TABLE IF EXISTS messages;
@@ -81,29 +89,24 @@ CREATE TABLE IF NOT EXISTS messages
 DROP TABLE IF EXISTS requests;
 CREATE TABLE IF NOT EXISTS requests
 (
-    id           SERIAL PRIMARY KEY,
-    type_request ENUM ('Service', 'Question'),
-    message_id   BIGINT UNSIGNED NOT NULL COMMENT 'Сообщение пользователя',
-    FOREIGN KEY (message_id) REFERENCES messages (id) ON UPDATE CASCADE ON DELETE CASCADE
+    id         SERIAL PRIMARY KEY,
+    type_id    BIGINT UNSIGNED NOT NULL,
+    message_id BIGINT UNSIGNED NOT NULL COMMENT 'Сообщение пользователя',
+
+    FOREIGN KEY (message_id) REFERENCES messages (id) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (type_id) REFERENCES catalog_data (id) ON UPDATE CASCADE ON DELETE NO ACTION,
+    FOREIGN KEY (type_id) REFERENCES catalog_data (id) -- триггеры
 ) COMMENT 'Заявка';
-
-DROP TABLE IF EXISTS type_service;
-CREATE TABLE IF NOT EXISTS type_service
-(
-    service_id SERIAL PRIMARY KEY,
-    type_name  VARCHAR(255) NOT NULL,
-
-    FOREIGN KEY (service_id) REFERENCES requests (id) ON UPDATE CASCADE ON DELETE CASCADE -- правильно?
-);
 
 DROP TABLE IF EXISTS services;
 CREATE TABLE IF NOT EXISTS services
 (
     id         SERIAL PRIMARY KEY,
+    type_id    BIGINT UNSIGNED NOT NULL,
     message_id BIGINT UNSIGNED,
     request_id BIGINT UNSIGNED NOT NULL,
 
-    FOREIGN KEY (request_id) REFERENCES requests (id) ON UPDATE CASCADE ON DELETE NO ACTION
+    FOREIGN KEY (type_id) REFERENCES catalog_data (id) -- триггеры!
 );
 
 DROP TABLE IF EXISTS photo_albums;
@@ -130,21 +133,5 @@ CREATE TABLE photos
 ALTER TABLE profiles
     ADD CONSTRAINT fk_photo_id FOREIGN KEY (photo_id) REFERENCES photos (id) ON UPDATE CASCADE ON DELETE set NULL;
 
-DROP TABLE IF EXISTS catalog;
-CREATE TABLE IF NOT EXISTS catalog
-(
-    id   SERIAL PRIMARY KEY,
-    name VARCHAR(255)
-) COMMENT 'Справочник';
 
-DROP TABLE IF EXISTS data_catalog;
-CREATE TABLE IF NOT EXISTS data_catalog
-(
-    id          SERIAL PRIMARY KEY,
-    value       VARCHAR(255),
-    sequence    BIGINT UNSIGNED,
-    value_print VARCHAR(255),
-    id_catalog  BIGINT UNSIGNED,
-    FOREIGN KEY (id_catalog) REFERENCES catalog (id) -- триггеры нужны!
-) COMMENT 'Данные справочника';
 
