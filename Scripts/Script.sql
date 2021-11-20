@@ -12,14 +12,14 @@ CREATE TABLE IF NOT EXISTS catalog
 DROP TABLE IF EXISTS catalog_data;
 CREATE TABLE IF NOT EXISTS catalog_data
 (
-    id          SERIAL PRIMARY KEY,
-    id_catalog  BIGINT UNSIGNED COMMENT 'Номер справочника',
-    id_catalog_data BIGINT UNSIGNED COMMENT 'Рекурсивный ключ',
-    value       VARCHAR(255) COMMENT 'Значение данных',
-    sequence    BIGINT UNSIGNED COMMENT 'Порядковый номер',
-    value_print VARCHAR(255) COMMENT 'Значение данных для вывода',
+    id              SERIAL PRIMARY KEY,
+    id_catalog      BIGINT UNSIGNED COMMENT 'Номер справочника',
+    id_catalog_data BIGINT UNSIGNED COMMENT 'Рекурсивный ключ', -- для многоуровневого каталога типов
+    value           VARCHAR(255) COMMENT 'Значение данных',
+    sequence        BIGINT UNSIGNED COMMENT 'Порядковый номер',
+    value_print     VARCHAR(255) COMMENT 'Значение данных для вывода',
 
-    FOREIGN KEY (id_catalog_data) REFERENCES catalog_data(id),
+    FOREIGN KEY (id_catalog_data) REFERENCES catalog_data (id),
     FOREIGN KEY (id_catalog) REFERENCES catalog (id) -- триггеры нужны!
 ) COMMENT 'Данные справочника';
 
@@ -83,15 +83,15 @@ CREATE TABLE IF NOT EXISTS messages
     media_id     BIGINT UNSIGNED,
     FOREIGN KEY (from_user_id) REFERENCES users (id) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY (to_user_id) REFERENCES users (id) ON UPDATE CASCADE ON DELETE CASCADE,
-    FOREIGN KEY (media_id) REFERENCES media (id) ON UPDATE CASCADE -- не знаю что при удалении поставить.
+    FOREIGN KEY (media_id) REFERENCES media (id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 DROP TABLE IF EXISTS requests;
 CREATE TABLE IF NOT EXISTS requests
 (
     id         SERIAL PRIMARY KEY,
-    type_id    BIGINT UNSIGNED NOT NULL,
-    message_id BIGINT UNSIGNED NOT NULL COMMENT 'Сообщение пользователя',
+    type_id    BIGINT UNSIGNED NOT NULL COMMENT 'Номер типа запроса',
+    message_id BIGINT UNSIGNED NOT NULL COMMENT 'Номер сообщения пользователя',
 
     FOREIGN KEY (message_id) REFERENCES messages (id) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY (type_id) REFERENCES catalog_data (id) ON UPDATE CASCADE ON DELETE NO ACTION,
