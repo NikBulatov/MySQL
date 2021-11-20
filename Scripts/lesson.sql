@@ -58,11 +58,12 @@ SELECT COUNT(id)                                          AS cnt,
        ANY_VALUE(created_at) -- просто created_at можно
 FROM media
 GROUP BY user_id;
-
+-- страшно! очень страшно! Мы не знаем, что это такое, если бы мы знали, что это такое, мы не знаем, что это такое
 SELECT @@sql_mode;
 SET @@sql_mode = CONCAT(@@sql_mode, ',ONLY_FULL_GROUP_BY');
 
 SET @@sql_mode = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION';
+-- страшно! очень страшно! Мы не знаем, что это такое, если бы мы знали, что это такое, мы не знаем, что это такое
 
 -- посмотреть друзей пользователя с id = 1
 SELECT initiator_user_id, target_user_id, requested_at
