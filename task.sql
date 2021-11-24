@@ -16,8 +16,28 @@ SET created_at = '2005-12-06 13:56:02',
 UPDATE users
 SET created_at = NOW(),
     updated_at = NOW();
-ALTER TABLE users MODIFY COLUMN created_at VARCHAR(255) DEFAULT NULL;
-ALTER TABLE users MODIFY COLUMN updated_at VARCHAR(255) DEFAULT NULL;
+/*
+2. Таблица users была неудачно спроектирована.
+Записи created_at и updated_at были заданы типом VARCHAR и в них долгое время помещались значения в формате 20.10.2017 8:10.
+Необходимо преобразовать поля к типу DATETIME, сохранив введённые ранее значения.
+Изменяю тип данных в столбцах.
+ */
+ALTER TABLE users
+    MODIFY COLUMN created_at VARCHAR(255) DEFAULT NULL;
+ALTER TABLE users
+    MODIFY COLUMN updated_at VARCHAR(255) DEFAULT NULL;
+-- преобразовываю
+UPDATE users
+SET created_at = STR_TO_DATE(created_at, '%d.%m.%Y %k:%i'),
+    updated_at = STR_TO_DATE(updated_at, '%d.%m.%Y %k:%i');
 
-UPDATE users SET created_at = '20.10.2017 8:10';
-UPDATE users SET updated_at = '20.10.2017 8:10';
+/*
+ 3. В таблице складских запасов storehouses_products в поле value могут встречаться самые разные цифры:
+ 0, если товар закончился и выше нуля, если на складе имеются запасы.
+ Необходимо отсортировать записи таким образом, чтобы они выводились в порядке увеличения значения value.
+ Однако нулевые запасы должны выводиться в конце, после всех записей.
+ */
+SELECT value FROM storehouses_products WHERE value <> 0 ORDER BY value ;
+
+
+
