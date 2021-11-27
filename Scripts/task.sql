@@ -88,3 +88,9 @@ SELECT ROUND(AVG((TO_DAYS(NOW()) - TO_DAYS(birthday)) / 365.25), 3) AS 'Mean age
  Следует учесть, что необходимы дни недели текущего года, а не года рождения.
  */
 
+/*
+ 3. (по желанию) Подсчитайте произведение чисел в столбце таблицы.
+ */
+USE storehouse;
+SELECT value FROM storehouses_products;
+SELECT EXP(SUM(LOG(value))) AS multiply FROM storehouses_products; -- логарифм произведения равен сумме логарифмов
