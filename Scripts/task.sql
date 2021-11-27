@@ -1,9 +1,11 @@
 /*
 https://docs.google.com/document/d/1yE0wn1m-EwqcJ458ga3eCptvBJcSIi1HaBp48OlT5ZI/edit
 */
+-- Практическое задание по теме «Операторы, фильтрация, сортировка и ограничение»
 -- Создаю столбцы, чтобы выполнить задание
 USE vk;
-ALTER TABLE profiles ADD COLUMN updated_at DATETIME DEFAULT NOW();
+ALTER TABLE profiles
+    ADD COLUMN updated_at DATETIME DEFAULT NOW();
 UPDATE profiles
 SET created_at = '2005-12-06 13:56:02',
     updated_at = '2006-06-06 13:56:04';
@@ -22,7 +24,9 @@ ALTER TABLE profiles
     MODIFY COLUMN created_at VARCHAR(255) DEFAULT NULL;
 ALTER TABLE profiles
     MODIFY COLUMN updated_at VARCHAR(255) DEFAULT NULL;
-UPDATE profiles SET created_at = '20.10.2017 8:10', updated_at = '20.10.2017 8:10';
+UPDATE profiles
+SET created_at = '20.10.2017 8:10',
+    updated_at = '20.10.2017 8:10';
 -- преобразовываю
 UPDATE profiles
 SET created_at = STR_TO_DATE(created_at, '%d.%m.%Y %k:%i'),
@@ -64,6 +68,23 @@ CREATE TABLE catalogs
     id      SERIAL PRIMARY KEY,
     catalog VARCHAR(255)
 );
-SELECT value FROM catalogs WHERE id IN (5, 1, 2) ORDER BY id;
-SELECT value FROM catalogs WHERE id = 1 OR id = 2 OR id = 5 ORDER BY id;
+SELECT value
+FROM catalogs
+WHERE id IN (5, 1, 2)
+ORDER BY id;
+SELECT value
+FROM catalogs
+WHERE id = 1
+   OR id = 2
+   OR id = 5
+ORDER BY id;
+-- Практическое задание теме «Агрегация данных»
+/*
+1. Подсчитайте средний возраст пользователей в таблице users.
+ */
+SELECT ROUND(AVG((TO_DAYS(NOW()) - TO_DAYS(birthday)) / 365.25), 3) AS 'Mean age' FROM profiles;
+/*
+ 2. Подсчитайте количество дней рождения, которые приходятся на каждый из дней недели.
+ Следует учесть, что необходимы дни недели текущего года, а не года рождения.
+ */
 
