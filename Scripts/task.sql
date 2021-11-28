@@ -91,10 +91,12 @@ FROM profiles;
  2.2 У каждой получившейся дате определяем деь недели (100 штук)
  2.3 Считаем количество по дням недели и группируем по дням
  */
- USE vk;
-SELECT day_week, COUNT(new_date) FROM
-(SELECT new_date, DATE_FORMAT(new_date, '%W') AS day_week FROM
-(SELECT birthday + INTERVAL (YEAR(NOW()) - YEAR(birthday)) YEAR AS new_date FROM profiles) birthday_now) days_week GROUP BY day_week;
+USE vk;
+SELECT day_week, COUNT(new_date)
+FROM (SELECT new_date, DATE_FORMAT(new_date, '%W') AS day_week
+      FROM (SELECT birthday + INTERVAL (YEAR(NOW()) - YEAR(birthday)) YEAR AS new_date
+            FROM profiles) birthday_now) days_week
+GROUP BY day_week;
 /*
  3. (по желанию) Подсчитайте произведение чисел в столбце таблицы.
  */
