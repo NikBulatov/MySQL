@@ -82,15 +82,24 @@ ORDER BY id;
 /*
 1. Подсчитайте средний возраст пользователей в таблице users.
  */
-SELECT ROUND(AVG((TO_DAYS(NOW()) - TO_DAYS(birthday)) / 365.25), 3) AS 'Mean age' FROM profiles;
+SELECT ROUND(AVG((TO_DAYS(NOW()) - TO_DAYS(birthday)) / 365.25), 3) AS 'Mean age'
+FROM profiles;
 /*
  2. Подсчитайте количество дней рождения, которые приходятся на каждый из дней недели.
  Следует учесть, что необходимы дни недели текущего года, а не года рождения.
+ 2.1 Находим разницу в годах с днями рождения, прибавляем эту разницу к их дате рождения.
+ 2.2 У каждой получившейся дате определяем деь недели (100 штук)
+ 2.3 Считаем количество по дням недели и группируем по дням
  */
-
+ USE vk;
+SELECT day_week, COUNT(new_date) FROM
+(SELECT new_date, DATE_FORMAT(new_date, '%W') AS day_week FROM
+(SELECT birthday + INTERVAL (YEAR(NOW()) - YEAR(birthday)) YEAR AS new_date FROM profiles) birthday_now) days_week GROUP BY day_week;
 /*
  3. (по желанию) Подсчитайте произведение чисел в столбце таблицы.
  */
 USE storehouse;
-SELECT value FROM storehouses_products;
-SELECT EXP(SUM(LOG(value))) AS multiply FROM storehouses_products; -- логарифм произведения равен сумме логарифмов
+SELECT value
+FROM storehouses_products;
+SELECT EXP(SUM(LOG(value))) AS multiply
+FROM storehouses_products; -- логарифм произведения равен сумме логарифмов
