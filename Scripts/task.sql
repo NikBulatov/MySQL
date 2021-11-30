@@ -95,5 +95,7 @@ VALUES (1, 'moscow', 'omsk'),
        (2, 'novgorod', 'kazan'),
        (3, 'bor', 'balahna'),
        (4, 'omsk', 'ufa');
-SELECT id, `from`, `to` FROM flights JOIN cities ON `from`=cities.label AND `to`=cities.label;
+SELECT DISTINCT f_name, t_name
+FROM (SELECT name AS f_name FROM flights JOIN cities ON `from`=cities.label) AS f_n JOIN
+    (SELECT name AS t_name FROM flights JOIN cities ON `to`=cities.label) AS t_n;
 
