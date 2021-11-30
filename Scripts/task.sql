@@ -7,11 +7,11 @@ USE vk;
 SELECT COUNT(*) mess, friend
 FROM (SELECT to_user_id AS friend
       FROM messages
-      WHERE to_user_id = 1
-      UNION
+      WHERE from_user_id = 1
+      UNION ALL
       SELECT from_user_id AS friend
       FROM messages
-      WHERE from_user_id = 1) as history
+      WHERE to_user_id = 1) as history
 GROUP BY friend
 ORDER BY mess DESC
 LIMIT 1;
