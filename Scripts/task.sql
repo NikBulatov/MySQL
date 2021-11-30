@@ -4,22 +4,35 @@
  Из всех друзей этого пользователя найдите человека, который больше всех общался с нашим пользователем.
  */
 USE vk;
-SELECT COUNT(*) mess, friend
-FROM (SELECT to_user_id AS friend
+/*
+SELECT COUNT(id) AS mess, friend
+FROM (SELECT id, to_user_id AS friend
       FROM messages
       WHERE from_user_id = 1
       UNION ALL
-      SELECT from_user_id AS friend
+      SELECT id, from_user_id AS friend
       FROM messages
-      WHERE to_user_id = 1) as history
+      WHERE to_user_id) AS history
 GROUP BY friend
-ORDER BY mess DESC
-LIMIT 1;
-
+ORDER BY mess DESC;
+*/
+SELECT from_user_id, to_user_id, COUNT(id) AS amount
+FROM (SELECT id, from_user_id, to_user_id
+      FROM messages, friend_requests
+      WHERE from_user_id = friend_requests.initiator_user_id
+        AND to_user_id = friend_requests.target_user_id) AS mess GROUP BY from_user_id ORDER BY amount;
 -- 2. Подсчитать общее количество лайков, которые получили пользователи младше 10 лет.
-SELECT SUM(likes), user
-FROM (SELECT COUNT(*) AS likes, likes.user_id AS user
-      FROM likes, profiles, users
-      WHERE likes.user_id = users.id AND TIMESTAMPDIFF(YEAR, birthday, NOW()) > 10) AS amount;
+SELECT COUNT(*)
+FROM likes,
+     profiles
+WHERE likes.user_id = profiles.user_id
+  AND TIMESTAMPDIFF(YEAR
+          , birthday
+          , NOW())
+    < 10;
 -- 3. Определить кто больше поставил лайков (всего): мужчины или женщины.
-SELECT COUNT(*) AS amount, gender FROM likes, profiles WHERE likes.user_id = profiles.user_id GROUP BY gender;
+SELECT COUNT(*) AS amount, gender
+FROM likes,
+     profiles
+WHERE likes.user_id = profiles.user_id
+GROUP BY gender;
