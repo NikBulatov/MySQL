@@ -3,7 +3,7 @@ USE samples;
  Домашнее задание по теме “Сложные запросы”
  1. Составьте список пользователей users, которые осуществили хотя бы один заказ orders в интернет магазине.
  */
- DROP TABLE IF EXISTS orders;
+DROP TABLE IF EXISTS orders;
 CREATE TABLE IF NOT EXISTS orders
 (
     id         SERIAL,
@@ -41,9 +41,27 @@ VALUES (1, 'Microwave'),
 INSERT INTO orders
 VALUES (1, 3, 2),
        (2, 1, 3),
-       (3, 2, 1);
+       (3, 2, 1),
+       (4, 1, 1);
 
-SELECT id, product_id, user_id FROM orders;
+SELECT id, product, user
+FROM (SELECT orders.id, users.name AS user, products.name AS product
+      FROM orders
+               JOIN
+           users
+               JOIN
+           products
+           ON user_id = users.id
+               AND product_id = products.id) AS result
+ORDER BY id;
+SELECT COUNT(id) AS amount, user
+FROM (SELECT orders.id, users.name AS user
+      FROM orders
+               JOIN
+           users
+           ON user_id = users.id
+     ) AS result
+GROUP BY user;
 
 
 /*
@@ -77,12 +95,5 @@ VALUES (1, 'moscow', 'omsk'),
        (2, 'novgorod', 'kazan'),
        (3, 'bor', 'balahna'),
        (4, 'omsk', 'ufa');
-SELECT *
-FROM cities;
-SELECT *
-FROM flights;
-SELECT name,
-from FROM(SELECT name
-      FROM flights, cities WHERE cities.label = `from` OR cities.label = `to`) X;
-
+SELECT id, `from`, `to` FROM flights JOIN cities ON `from`=cities.label AND `to`=cities.label;
 
