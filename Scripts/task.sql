@@ -18,18 +18,19 @@ ORDER BY mess DESC;
 */
 SELECT from_user_id, to_user_id, COUNT(id) AS amount
 FROM (SELECT id, from_user_id, to_user_id
-      FROM messages, friend_requests
-      WHERE from_user_id = friend_requests.initiator_user_id
-        AND to_user_id = friend_requests.target_user_id) AS mess GROUP BY from_user_id ORDER BY amount;
+      FROM messages
+               JOIN
+           friend_requests
+           ON (from_user_id = friend_requests.initiator_user_id = 1
+           OR to_user_id = friend_requests.target_user_id) AND status = 'approved') AS mess
+GROUP BY from_user_id
+ORDER BY amount DESC;
 -- 2. Подсчитать общее количество лайков, которые получили пользователи младше 10 лет.
 SELECT COUNT(*)
 FROM likes,
      profiles
 WHERE likes.user_id = profiles.user_id
-  AND TIMESTAMPDIFF(YEAR
-          , birthday
-          , NOW())
-    < 10;
+  AND TIMESTAMPDIFF(YEAR, birthday, NOW()) < 10;
 -- 3. Определить кто больше поставил лайков (всего): мужчины или женщины.
 SELECT COUNT(*) AS amount, gender
 FROM likes,
