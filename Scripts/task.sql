@@ -24,7 +24,7 @@ FROM (SELECT id, from_user_id, to_user_id
            ON (from_user_id = friend_requests.initiator_user_id = 1
            OR to_user_id = friend_requests.target_user_id) AND status = 'approved') AS mess
 GROUP BY from_user_id
-ORDER BY amount DESC;
+ORDER BY amount DESC LIMIT 1;
 -- 2. Подсчитать общее количество лайков, которые получили пользователи младше 10 лет.
 SELECT COUNT(*)
 FROM likes,
