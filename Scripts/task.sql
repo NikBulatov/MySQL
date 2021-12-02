@@ -20,6 +20,7 @@ FROM (
          GROUP BY from_user_id, to_user_id) AS result
 ORDER BY amount DESC
 LIMIT 1;
+
 -- 2. Подсчитать общее количество лайков, которые получили пользователи младше 10 лет.
 SELECT COUNT(*)
 FROM likes
@@ -27,6 +28,7 @@ FROM likes
      profiles
      ON likes.user_id = profiles.user_id
          AND TIMESTAMPDIFF(YEAR, birthday, NOW()) < 10;
+
 -- 3. Определить кто больше поставил лайков (всего): мужчины или женщины.
 SELECT COUNT(*) AS amount, gender
 FROM likes
