@@ -4,6 +4,7 @@
  Из всех друзей этого пользователя найдите человека, который больше всех общался с нашим пользователем.
  */
 USE vk;
+-- Саша помог
 SELECT from_user_id AS target_result, to_user_id AS our_user, amount
 FROM (
          SELECT messages.from_user_id, messages.to_user_id, COUNT(DISTINCT messages.id) AS amount
