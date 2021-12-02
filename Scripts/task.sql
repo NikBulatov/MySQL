@@ -4,28 +4,22 @@
  Из всех друзей этого пользователя найдите человека, который больше всех общался с нашим пользователем.
  */
 USE vk;
-/*
-SELECT COUNT(id) AS mess, friend
-FROM (SELECT id, to_user_id AS friend
-      FROM messages
-      WHERE from_user_id = 1
-      UNION ALL
-      SELECT id, from_user_id AS friend
-      FROM messages
-      WHERE to_user_id) AS history
-GROUP BY friend
-ORDER BY mess DESC;
-*/
-SELECT from_user_id AS `from`, to_user_id AS `to`, COUNT(id) AS amount
-      FROM (SELECT id, from_user_id, to_user_id
-            FROM messages
-                     JOIN
-                 friend_requests
-                 ON (from_user_id = friend_requests.initiator_user_id
-                     AND to_user_id = friend_requests.target_user_id) AND status = 'approved'
-           ) AS mess
-WHERE to_user_id = 1
-   OR from_user_id = 1;
+SELECT from_user_id AS target_result, to_user_id AS our_user, amount
+FROM (
+         SELECT messages.from_user_id, messages.to_user_id, COUNT(DISTINCT messages.id) AS amount
+         FROM messages
+                  JOIN
+              (SELECT from_user_id, to_user_id, id
+               FROM messages
+               UNION
+               SELECT to_user_id, from_user_id, id
+               FROM messages) AS mess
+                  JOIN friend_requests
+                       ON initiator_user_id IN (mess.from_user_id, mess.to_user_id) AND status = 'approved'
+         WHERE mess.from_user_id = 1
+         GROUP BY from_user_id, to_user_id) AS result
+ORDER BY amount DESC
+LIMIT 1;
 -- 2. Подсчитать общее количество лайков, которые получили пользователи младше 10 лет.
 SELECT COUNT(*)
 FROM likes
