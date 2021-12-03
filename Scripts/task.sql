@@ -6,12 +6,12 @@
 USE vk;
 SELECT from_user_id                                                                   AS friend,
        (SELECT CONCAT(firstname, ' ', lastname) FROM users WHERE id = m.from_user_id) AS name,
-       COUNT(*)                                                                       AS messages
+       COUNT(m.id)                                                                       AS messages
 FROM messages m
-         JOIN users u ON to_user_id = u.id -- сопоставляем получателя с пользователем
-         JOIN friend_requests fr ON from_user_id = fr.initiator_user_id OR from_user_id = fr.target_user_id -- он может быть инициатором и жертвой
+         JOIN friend_requests fr
+              ON from_user_id = fr.initiator_user_id OR from_user_id = fr.target_user_id -- он может быть инициатором и жертвой
 WHERE status = 'approved' -- у которого принята дружба
-  AND u.id = 1 -- пользователь
+  AND to_user_id = 1      -- пользователь
 GROUP BY friend
 ORDER BY messages
         DESC
