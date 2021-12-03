@@ -24,10 +24,10 @@ GROUP BY from_user_id
 ORDER BY amount DESC
 LIMIT 1;
   */
--- решение препода
-SELECT from_user_id AS friend,
+-- решение
+SELECT from_user_id                                                                          AS friend,
        (SELECT CONCAT(firstname, ' ', lastname) FROM users WHERE id = messages.from_user_id) AS name,
-       COUNT(*) AS messages
+       COUNT(*)                                                                              AS messages
 FROM messages
 WHERE to_user_id = 1
   AND from_user_id IN (SELECT initiator_user_id
@@ -51,6 +51,11 @@ WHERE media_id IN (SELECT id
                                      FROM profiles
                                      WHERE TIMESTAMPDIFF(YEAR, birthday, NOW()) < 10));
 -- 3. Определить кто больше поставил лайков (всего): мужчины или женщины.
+-- решение с урока
+SELECT COUNT(*) AS amount, gender
+FROM (SELECT user_id AS user, (SELECT gender FROM profiles WHERE user_id = user) AS gender FROM likes) AS dummy
+GROUP BY gender;
+-- моё решение (на урок по join)
 SELECT COUNT(*) AS amount, gender
 FROM likes
          JOIN
