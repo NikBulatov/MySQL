@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS users
     INDEX phone_idx (phone),
     INDEX email_idx (email),
 
-    FOREIGN KEY (user_type_id) REFERENCES catalog_data (id) -- триггеры
+    FOREIGN KEY (user_type_id) REFERENCES catalog_data (id) ON UPDATE CASCADE ON DELETE NO ACTION-- триггеры
 );
 
 DROP TABLE IF EXISTS profiles;
@@ -49,7 +49,6 @@ CREATE TABLE IF NOT EXISTS profiles
     birthday   DATE,
     photo_id   BIGINT UNSIGNED,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    hometown   VARCHAR(100),
 
     FOREIGN KEY (user_id) REFERENCES users (id) ON UPDATE CASCADE ON DELETE CASCADE
 ) COMMENT 'Профиль';
@@ -69,7 +68,7 @@ CREATE TABLE media
     updated_at    DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
     FOREIGN KEY (user_id) REFERENCES users (id) ON UPDATE CASCADE ON DELETE CASCADE,
-    FOREIGN KEY (media_type_id) REFERENCES catalog_data (id) -- триггеры
+    FOREIGN KEY (media_type_id) REFERENCES catalog_data (id) ON UPDATE CASCADE -- триггеры
 );
 
 DROP TABLE IF EXISTS messages;
@@ -95,7 +94,7 @@ CREATE TABLE IF NOT EXISTS requests
 
     FOREIGN KEY (message_id) REFERENCES messages (id) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY (type_id) REFERENCES catalog_data (id) ON UPDATE CASCADE ON DELETE NO ACTION,
-    FOREIGN KEY (type_id) REFERENCES catalog_data (id) -- триггеры
+    FOREIGN KEY (type_id) REFERENCES catalog_data (id) ON UPDATE CASCADE -- триггеры
 ) COMMENT 'Заявка';
 
 DROP TABLE IF EXISTS services;
@@ -106,7 +105,7 @@ CREATE TABLE IF NOT EXISTS services
     message_id BIGINT UNSIGNED,
     request_id BIGINT UNSIGNED NOT NULL,
 
-    FOREIGN KEY (type_id) REFERENCES catalog_data (id) -- триггеры!
+    FOREIGN KEY (type_id) REFERENCES catalog_data (id) ON UPDATE CASCADE -- триггеры!
 );
 
 DROP TABLE IF EXISTS photo_albums;
