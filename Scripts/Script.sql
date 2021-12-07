@@ -38,17 +38,17 @@ CREATE TABLE IF NOT EXISTS users
     INDEX phone_idx (phone),
     INDEX email_idx (email),
 
-    FOREIGN KEY (user_type_id) REFERENCES catalog_data (id) ON UPDATE CASCADE ON DELETE NO ACTION-- триггеры
+    FOREIGN KEY (user_type_id) REFERENCES catalog (id) ON UPDATE CASCADE ON DELETE NO ACTION-- триггеры
 ) COMMENT 'Пользователи';
 
 DROP TABLE IF EXISTS profiles;
 CREATE TABLE IF NOT EXISTS profiles
 (
     user_id    SERIAL PRIMARY KEY,
-    gender     CHAR(1),
+    gender     CHAR(1)  NOT NULL,
     birthday   DATE,
     photo_id   BIGINT UNSIGNED,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     FOREIGN KEY (user_id) REFERENCES users (id) ON UPDATE CASCADE ON DELETE CASCADE
 ) COMMENT 'Профили';
@@ -67,7 +67,7 @@ CREATE TABLE media
     updated_at    DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
     FOREIGN KEY (user_id) REFERENCES users (id) ON UPDATE CASCADE ON DELETE CASCADE,
-    FOREIGN KEY (media_type_id) REFERENCES catalog_data (id) ON UPDATE CASCADE -- триггеры
+    FOREIGN KEY (media_type_id) REFERENCES catalog (id) ON UPDATE CASCADE -- триггеры
 ) COMMENT 'Файлы';
 
 DROP TABLE IF EXISTS messages;
@@ -92,19 +92,31 @@ CREATE TABLE IF NOT EXISTS requests
     message_id BIGINT UNSIGNED NOT NULL COMMENT 'Номер сообщения пользователя',
 
     FOREIGN KEY (message_id) REFERENCES messages (id) ON UPDATE CASCADE ON DELETE CASCADE,
-    FOREIGN KEY (type_id) REFERENCES catalog_data (id) ON UPDATE CASCADE ON DELETE NO ACTION,
-    FOREIGN KEY (type_id) REFERENCES catalog_data (id) ON UPDATE CASCADE -- триггеры
+    FOREIGN KEY (type_id) REFERENCES catalog (id) ON UPDATE CASCADE ON DELETE NO ACTION -- triggers
 ) COMMENT 'Заявки';
+
+
+DROP TABLE IF EXISTS masters;
+CREATE TABLE IF NOT EXISTS masters
+(
+    id             SERIAL PRIMARY KEY,
+    type_master_id BIGINT UNSIGNED NOT NULL COMMENT 'Тип мастера',
+    name           VARCHAR(255)    NOT NULL,
+
+    FOREIGN KEY (type_master_id) REFERENCES catalog_data (id_catalog) ON UPDATE CASCADE ON DELETE NO ACTION -- triggers
+);
 
 DROP TABLE IF EXISTS services;
 CREATE TABLE IF NOT EXISTS services
 (
-    id         SERIAL PRIMARY KEY,
-    type_id    BIGINT UNSIGNED NOT NULL,
-    message_id BIGINT UNSIGNED,
-    request_id BIGINT UNSIGNED NOT NULL,
+    id             SERIAL PRIMARY KEY,
+    type_master_id BIGINT UNSIGNED NOT NULL,
+    type_id        BIGINT UNSIGNED NOT NULL,
+    message_id     BIGINT UNSIGNED,
+    request_id     BIGINT UNSIGNED NOT NULL,
 
-    FOREIGN KEY (type_id) REFERENCES catalog_data (id) ON UPDATE CASCADE -- триггеры!
+    FOREIGN KEY (type_master_id) REFERENCES catalog (id) ON UPDATE CASCADE,
+    FOREIGN KEY (type_id) REFERENCES catalog (id) ON UPDATE CASCADE -- триггеры!
 ) COMMENT 'Услуги';
 
 DROP TABLE IF EXISTS photo_albums;
