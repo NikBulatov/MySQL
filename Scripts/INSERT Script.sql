@@ -55,16 +55,19 @@ VALUES (1, 'Elena', 'Bulatova', '+7 (951) 973-19-72', 'el.bulatova70@yandex.ru')
 INSERT INTO media (user_id)
 SELECT users.id
 FROM users;
+
 UPDATE media
 SET media_type_id = 4,
     filename      = 'photo_profile.jpg',
     size          = RAND() * 1000
 WHERE user_id IN (1, 2);
+
 UPDATE media
 SET media_type_id = 4,
     filename      = 'photo_hairs.jpg',
     size          = RAND() * 10000
 WHERE user_id NOT IN (1, 2);
+
 UPDATE media
 SET size          = RAND() * 100000,
     media_type_id = 5,
@@ -127,3 +130,9 @@ VALUES (1, 1, 1),
        (15, 15, 15),
        (16, 16, 16),
        (17, 17, 17);
+
+INSERT INTO messages (from_user_id, to_user_id, body, media_id)
+VALUES ();
+
+INSERT INTO services (type_master_id, type_id, message_id, request_id)
+VALUES (10, 15, );

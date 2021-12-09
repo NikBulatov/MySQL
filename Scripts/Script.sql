@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS users
     INDEX phone_idx (phone),
     INDEX email_idx (email),
 
-    FOREIGN KEY (user_type_id) REFERENCES catalog_data(id) ON UPDATE CASCADE ON DELETE NO ACTION-- триггеры
+    FOREIGN KEY (user_type_id) REFERENCES catalog_data (id) ON UPDATE CASCADE ON DELETE NO ACTION-- триггеры
 ) COMMENT 'Пользователи';
 
 DROP TABLE IF EXISTS profiles;
@@ -99,13 +99,14 @@ DROP TABLE IF EXISTS services;
 CREATE TABLE IF NOT EXISTS services
 (
     id             SERIAL PRIMARY KEY,
-    type_master_id BIGINT UNSIGNED NOT NULL,
-    type_id        BIGINT UNSIGNED NOT NULL,
+    type_master_id BIGINT UNSIGNED                      NOT NULL,
+    type_id        BIGINT UNSIGNED                      NOT NULL,
     message_id     BIGINT UNSIGNED,
-    request_id     BIGINT UNSIGNED NOT NULL,
-
+    request_id     BIGINT UNSIGNED                      NOT NULL,
+    status         ENUM ('done', 'canceled', 'created') NOT NULL DEFAULT 'created',
     FOREIGN KEY (type_master_id) REFERENCES catalog_data (id) ON UPDATE CASCADE,
-    FOREIGN KEY (type_id) REFERENCES catalog_data (id) ON UPDATE CASCADE -- триггеры!
+    FOREIGN KEY (type_id) REFERENCES catalog_data (id) ON UPDATE CASCADE,
+    FOREIGN KEY (request_id) REFERENCES catalog_data (id) ON UPDATE CASCADE ON DELETE CASCADE -- триггеры!
 ) COMMENT 'Услуги';
 
 DROP TABLE IF EXISTS photo_albums;
