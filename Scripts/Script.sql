@@ -14,13 +14,13 @@ CREATE TABLE IF NOT EXISTS catalog_data
 (
     id              SERIAL PRIMARY KEY,
     id_catalog      BIGINT UNSIGNED COMMENT 'Номер справочника',
-    id_catalog_data BIGINT UNSIGNED COMMENT 'Рекурсивный ключ', -- для многоуровневого каталога типов
+    id_catalog_data BIGINT UNSIGNED COMMENT 'Рекурсивный ключ',                          -- для многоуровневого каталога типов
     value           VARCHAR(255) COMMENT 'Значение данных',
     sequence        BIGINT UNSIGNED COMMENT 'Порядковый номер',
     value_print     VARCHAR(255) COMMENT 'Значение данных для вывода',
 
-    FOREIGN KEY (id_catalog_data) REFERENCES catalog_data (id),
-    FOREIGN KEY (id_catalog) REFERENCES catalog (id)            -- триггеры нужны!
+    FOREIGN KEY (id_catalog_data) REFERENCES catalog_data (id) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (id_catalog) REFERENCES catalog (id) ON UPDATE CASCADE ON DELETE CASCADE -- триггеры нужны!
 ) COMMENT 'Данные справочника';
 
 
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS users
     INDEX phone_idx (phone),
     INDEX email_idx (email),
 
-    FOREIGN KEY (user_type_id) REFERENCES catalog_data (id) ON UPDATE CASCADE ON DELETE NO ACTION-- триггеры
+    FOREIGN KEY (user_type_id) REFERENCES catalog_data (id) ON UPDATE CASCADE ON DELETE CASCADE -- триггеры
 ) COMMENT 'Пользователи';
 
 DROP TABLE IF EXISTS profiles;
@@ -62,7 +62,7 @@ CREATE TABLE media
     user_id       BIGINT UNSIGNED NOT NULL,
     filename      VARCHAR(255),
     size          INT,
-    metadata      JSON,
+    metadata      TEXT,
     created_at    DATETIME DEFAULT NOW(),
     updated_at    DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
@@ -88,11 +88,13 @@ DROP TABLE IF EXISTS requests;
 CREATE TABLE IF NOT EXISTS requests
 (
     id         SERIAL PRIMARY KEY,
-    type_id    BIGINT UNSIGNED NOT NULL COMMENT 'Номер типа запроса',
-    message_id BIGINT UNSIGNED COMMENT 'Номер сообщения пользователя',
+    type_id    BIGINT UNSIGNED NOT NULL COMMENT 'Тип запроса',
+    user_id    BIGINT UNSIGNED NOT NULL COMMENT 'Пользователь',
+    message_id BIGINT UNSIGNED COMMENT 'Сообщения пользователя',
 
     FOREIGN KEY (message_id) REFERENCES messages (id) ON UPDATE CASCADE ON DELETE CASCADE,
-    FOREIGN KEY (type_id) REFERENCES catalog_data (id) ON UPDATE CASCADE ON DELETE NO ACTION -- triggers
+    FOREIGN KEY (user_id) REFERENCES users (id) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (type_id) REFERENCES catalog_data (id) ON UPDATE CASCADE ON DELETE CASCADE -- triggers
 ) COMMENT 'Заявки';
 
 DROP TABLE IF EXISTS services;
@@ -101,12 +103,15 @@ CREATE TABLE IF NOT EXISTS services
     id             SERIAL PRIMARY KEY,
     type_master_id BIGINT UNSIGNED                      NOT NULL,
     type_id        BIGINT UNSIGNED                      NOT NULL,
+    user_id        BIGINT UNSIGNED                      NOT NULL,
     message_id     BIGINT UNSIGNED,
     request_id     BIGINT UNSIGNED                      NOT NULL,
     status         ENUM ('done', 'canceled', 'created') NOT NULL DEFAULT 'created',
+
     FOREIGN KEY (type_master_id) REFERENCES catalog_data (id) ON UPDATE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users (id) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY (type_id) REFERENCES catalog_data (id) ON UPDATE CASCADE,
-    FOREIGN KEY (request_id) REFERENCES catalog_data (id) ON UPDATE CASCADE ON DELETE CASCADE -- триггеры!
+    FOREIGN KEY (request_id) REFERENCES requests (id) ON UPDATE CASCADE ON DELETE CASCADE -- триггеры!
 ) COMMENT 'Услуги';
 
 DROP TABLE IF EXISTS photo_albums;
@@ -116,7 +121,7 @@ CREATE TABLE photo_albums
     name    varchar(255)    DEFAULT NULL,
     user_id BIGINT UNSIGNED DEFAULT NULL,
 
-    FOREIGN KEY (user_id) REFERENCES users (id) ON UPDATE CASCADE ON DELETE SET NULL
+    FOREIGN KEY (user_id) REFERENCES users (id) ON UPDATE CASCADE ON DELETE CASCADE
 ) COMMENT 'Фото альбомы';
 
 DROP TABLE IF EXISTS photos;
@@ -132,7 +137,4 @@ CREATE TABLE photos
 ) COMMENT 'Фотографии';
 
 ALTER TABLE profiles
-    ADD CONSTRAINT fk_photo_id FOREIGN KEY (photo_id) REFERENCES photos (id) ON UPDATE CASCADE ON DELETE SET NULL;
-
-
-
+    ADD CONSTRAINT fk_photo_id FOREIGN KEY (photo_id) REFERENCES photos (id) ON UPDATE CASCADE ON DELETE CASCADE;

@@ -1,29 +1,31 @@
 USE site;
+-- вставка типов сущностей
 INSERT INTO catalog (name)
 VALUES ('types_users'),
        ('types_media'),
        ('types_requests'),
        ('types_masters'),
        ('types_services');
-
+-- заполнение данными типы сущностей
 INSERT INTO catalog_data (id_catalog, value, sequence, value_print, id_catalog_data)
+-- типы пользователей (users)
 VALUES (1, 'admin', 1, 'Администратор', NULL),
        (1, 'client', 2, 'Клиент', NULL),
        (1, 'developer', 3, 'Разработчик', NULL),
-       --
+-- типы файлов (media)
        (2, 'photo', 1, 'Фотографии', NULL),
        (2, 'video', 2, 'Видео', NULL),
        (2, 'file', 3, 'Файл', NULL),
-       --
+-- типы запросов (requests)
        (3, 'to_service', 1, 'Запись на услугу', NULL),
        (3, 'cancel_service', 2, 'Отменить запись', NULL),
        (3, 'update_service', 3, 'Обновить данные на запись', NULL),
-       --
+-- типы услуг (services)
        (4, 'hairdresser', 1, 'Услуги парикмахера', NULL),
        (4, 'manicure', 2, 'Маникюр', NULL),
        (4, 'pedicure', 3, 'Педикюр', NULL),
        (4, 'podologist', 4, 'Услуги подолога', NULL),
-       --
+-- Услуги (services)
        (5, 'haircut', 1, 'Стрижка', 10),
        (5, 'hairstyle', 2, 'Укладка', 10),
        (5, 'care', 3, 'Уход и восстановление', 10),
@@ -52,28 +54,30 @@ VALUES (1, 'Elena', 'Bulatova', '+7 (951) 973-19-72', 'el.bulatova70@yandex.ru')
        (2, 'Joe', 'Little', '071.103.6766', 'craig62@example.net'),
        (2, 'Horace', 'Shanahan', '917.129.9385x7061', 'vheathcote@example.org');
 
+-- привязка id'шников
 INSERT INTO media (user_id)
 SELECT users.id
 FROM users;
 
+-- заполнение данными
 UPDATE media
 SET media_type_id = 4,
     filename      = 'photo_profile.jpg',
     size          = RAND() * 1000
 WHERE user_id IN (1, 2);
-
 UPDATE media
 SET media_type_id = 4,
     filename      = 'photo_hairs.jpg',
     size          = RAND() * 10000
 WHERE user_id NOT IN (1, 2);
-
 UPDATE media
 SET size          = RAND() * 100000,
     media_type_id = 5,
     filename      = 'video_hairstyles.mp4'
 WHERE user_id NOT IN (1, 2, 12, 0, 6, 9, 3, 4, 8);
 
+
+-- таблица профилей
 INSERT INTO profiles (user_id, gender, birthday)
 VALUES (1, 'f', '1970-01-03'),
        (2, 'm', '1999-01-06'),
@@ -93,6 +97,7 @@ VALUES (1, 'f', '1970-01-03'),
        (16, 'm', '1985-04-09'),
        (17, 'm', '1965-02-25');
 
+-- Фотоальбомы
 INSERT INTO photo_albums (user_id, name)
 VALUES (1, 'My haircuts'),
        (2, 'My wishes'),
@@ -112,27 +117,31 @@ VALUES (1, 'My haircuts'),
        (16, 'ab'),
        (17, 'adipisci');
 
-INSERT INTO photos (user_id, album_id, media_id)
-VALUES (1, 1, 1),
-       (2, 2, 2),
-       (3, 3, 3),
-       (4, 4, 4),
-       (5, 5, 5),
-       (6, 6, 6),
-       (7, 7, 7),
-       (8, 8, 8),
-       (9, 9, 9),
-       (10, 10, 10),
-       (11, 11, 11),
-       (12, 12, 12),
-       (13, 13, 13),
-       (14, 14, 14),
-       (15, 15, 15),
-       (16, 16, 16),
-       (17, 17, 17);
+-- Фотографии
+INSERT INTO photos (media_id, user_id)
+SELECT id, user_id
+FROM media
+WHERE media_type_id = 4;
 
-INSERT INTO messages (from_user_id, to_user_id, body, media_id)
-VALUES ();
+-- Сообщения
+INSERT INTO messages (from_user_id, to_user_id, body)
+SELECT from_u.id, to_u.id, 'Hello!'
+FROM users from_u
+         JOIN users to_u ON from_u.id != to_u.id
+WHERE from_u.id != 1;
 
-INSERT INTO services (type_master_id, type_id, message_id, request_id)
-VALUES (10, 15, );
+-- Запросы на услугу (заявки) 3 раза выполнить
+INSERT INTO requests (type_id, user_id)
+SELECT c.id, u.id
+FROM catalog_data c
+         JOIN users u
+WHERE id_catalog = 3
+  AND u.id != 1;
+
+-- Услуги
+INSERT INTO services (type_master_id, type_id, request_id, user_id)
+SELECT mas.id, type_r.id, r.id, u.id
+FROM (SELECT id FROM catalog_data WHERE id_catalog = 4) AS mas
+         JOIN (SELECT id FROM catalog_data WHERE id_catalog = 3) AS type_r
+         JOIN (SELECT id FROM users WHERE id != 1) AS u
+         JOIN (SELECT id FROM requests) AS r;
