@@ -6,5 +6,4 @@
 - Service: haircut, styling etc.
 - Messages between clients and admin(master)
 - Media files: photos, videos and opportunity pin it messages.
-- Sharing in other social networks
- 
+- Sharing in other social network
