@@ -107,6 +107,7 @@ CREATE TABLE IF NOT EXISTS services
     message_id     BIGINT UNSIGNED,
     request_id     BIGINT UNSIGNED                      NOT NULL,
     status         ENUM ('done', 'canceled', 'created') NOT NULL DEFAULT 'created',
+    visit_time DATETIME NOT NULL COMMENT 'Плановая дата помещения мастера',
 
     FOREIGN KEY (type_master_id) REFERENCES catalog_data (id) ON UPDATE CASCADE,
     FOREIGN KEY (user_id) REFERENCES users (id) ON UPDATE CASCADE ON DELETE CASCADE,

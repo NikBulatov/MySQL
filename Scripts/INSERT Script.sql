@@ -139,9 +139,9 @@ WHERE id_catalog = 3
   AND u.id != 1;
 
 -- Услуги
-INSERT INTO services (type_master_id, type_id, request_id, user_id)
-SELECT mas.id, type_r.id, r.id, u.id
+INSERT INTO services (type_master_id, type_id, request_id, user_id, visit_time)
+SELECT mas.id, type_s.id, r.id, u.id, NOW()
 FROM (SELECT id FROM catalog_data WHERE id_catalog = 4) AS mas
-         JOIN (SELECT id FROM catalog_data WHERE id_catalog = 3) AS type_r
+         JOIN (SELECT id FROM catalog_data WHERE id_catalog = 5) AS type_s
          JOIN (SELECT id FROM users WHERE id != 1) AS u
-         JOIN (SELECT id FROM requests) AS r;
+         JOIN (SELECT id FROM requests WHERE type_id != 8) AS r;
