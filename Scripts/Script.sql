@@ -14,13 +14,13 @@ CREATE TABLE IF NOT EXISTS catalog_data
 (
     id              SERIAL PRIMARY KEY,
     id_catalog      BIGINT UNSIGNED COMMENT 'Номер справочника',
-    id_catalog_data BIGINT UNSIGNED COMMENT 'Рекурсивный ключ',                          -- для многоуровневого каталога типов
+    id_catalog_data BIGINT UNSIGNED COMMENT 'Рекурсивный ключ', -- для многоуровневого каталога типов
     value           VARCHAR(255) COMMENT 'Значение данных',
     sequence        BIGINT UNSIGNED COMMENT 'Порядковый номер',
     value_print     VARCHAR(255) COMMENT 'Значение данных для вывода',
 
     FOREIGN KEY (id_catalog_data) REFERENCES catalog_data (id) ON UPDATE CASCADE ON DELETE CASCADE,
-    FOREIGN KEY (id_catalog) REFERENCES catalog (id) ON UPDATE CASCADE ON DELETE CASCADE -- триггеры нужны!
+    FOREIGN KEY (id_catalog) REFERENCES catalog (id) ON UPDATE CASCADE ON DELETE CASCADE
 ) COMMENT 'Данные справочника';
 
 
@@ -28,17 +28,17 @@ DROP TABLE IF EXISTS users;
 CREATE TABLE IF NOT EXISTS users
 (
     id           SERIAL PRIMARY KEY,
-    user_type_id BIGINT UNSIGNED                    NOT NULL COMMENT 'Тип пользователя',
-    firstname    VARCHAR(255)                       NOT NULL COMMENT 'Имя пользователя',
-    lastname     VARCHAR(255)                       NOT NULL COMMENT 'Фамилия пользователя',
-    phone        VARCHAR(255)                       NOT NULL COMMENT 'Номер телефона',
-    email        VARCHAR(255)                       NOT NULL COMMENT 'Электронная почта пользователя',
-    created_at   DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL COMMENT 'Дата создания',
-    updated_at   DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL COMMENT 'Дата обновления информации',
+    user_type_id BIGINT UNSIGNED DEFAULT 2                 NOT NULL COMMENT 'Тип пользователя',
+    firstname    VARCHAR(255)                              NOT NULL COMMENT 'Имя пользователя',
+    lastname     VARCHAR(255)                              NOT NULL COMMENT 'Фамилия пользователя',
+    phone        VARCHAR(255)                              NOT NULL COMMENT 'Номер телефона',
+    email        VARCHAR(255)                              NOT NULL COMMENT 'Электронная почта пользователя',
+    created_at   DATETIME        DEFAULT CURRENT_TIMESTAMP NOT NULL COMMENT 'Дата создания',
+    updated_at   DATETIME        DEFAULT CURRENT_TIMESTAMP NOT NULL COMMENT 'Дата обновления информации',
     INDEX phone_idx (phone),
     INDEX email_idx (email),
 
-    FOREIGN KEY (user_type_id) REFERENCES catalog_data (id) ON UPDATE CASCADE ON DELETE CASCADE -- триггеры
+    FOREIGN KEY (user_type_id) REFERENCES catalog_data (id) ON UPDATE CASCADE ON DELETE CASCADE
 ) COMMENT 'Пользователи';
 
 DROP TABLE IF EXISTS profiles;
@@ -58,16 +58,16 @@ DROP TABLE IF EXISTS media;
 CREATE TABLE media
 (
     id            SERIAL PRIMARY KEY,
-    media_type_id BIGINT UNSIGNED,
+    media_type_id BIGINT UNSIGNED DEFAULT 6,
     user_id       BIGINT UNSIGNED NOT NULL,
     filename      VARCHAR(255),
     size          INT,
     metadata      TEXT,
-    created_at    DATETIME DEFAULT NOW(),
+    created_at    DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at    DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
     FOREIGN KEY (user_id) REFERENCES users (id) ON UPDATE CASCADE ON DELETE CASCADE,
-    FOREIGN KEY (media_type_id) REFERENCES catalog_data (id) ON UPDATE CASCADE ON DELETE CASCADE -- триггеры
+    FOREIGN KEY (media_type_id) REFERENCES catalog_data (id) ON UPDATE CASCADE ON DELETE CASCADE -- + триггеры
 ) COMMENT 'Файлы';
 
 DROP TABLE IF EXISTS messages;
@@ -107,7 +107,7 @@ CREATE TABLE IF NOT EXISTS services
     message_id     BIGINT UNSIGNED,
     request_id     BIGINT UNSIGNED                      NOT NULL,
     status         ENUM ('done', 'canceled', 'created') NOT NULL DEFAULT 'created',
-    visit_time DATETIME NOT NULL COMMENT 'Плановая дата помещения мастера',
+    visit_time     DATETIME                             NOT NULL COMMENT 'Плановая дата помещения мастера',
 
     FOREIGN KEY (type_master_id) REFERENCES catalog_data (id) ON UPDATE CASCADE,
     FOREIGN KEY (user_id) REFERENCES users (id) ON UPDATE CASCADE ON DELETE CASCADE,
