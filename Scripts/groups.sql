@@ -7,4 +7,4 @@ GROUP BY type_master_id;
 -- Количество услуг по группам
 SELECT COUNT(user_id), (SELECT value_print FROM catalog_data WHERE id = s.type_id) AS service_name
 FROM services s
-GROUP BY type_id
+GROUP BY type_id;
