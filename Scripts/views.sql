@@ -32,5 +32,5 @@ SELECT u.id,
        updated_at
 FROM users u
          JOIN catalog_data cd on u.user_type_id = cd.id;
-SELECT * FROM v_users;
-
+SELECT *
+FROM v_users;

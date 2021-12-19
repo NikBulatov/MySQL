@@ -3,125 +3,145 @@
   <ID>DATABASE</ID>
   <OriginalElement>4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.SCHEMA:site</OriginalElement>
   <nodes>
-    <node x="33.44074923547396" y="685.0">4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.photo_albums</node>
-    <node x="458.59403669724725" y="1310.0">4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.services</node>
-    <node x="328.75" y="366.0">4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.users</node>
-    <node x="58.75" y="1114.0">4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.profiles</node>
-    <node x="11.0" y="916.0">4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.photos</node>
-    <node x="693.75" y="1136.0">4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.requests</node>
-    <node x="435.59403669724725" y="894.0">4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.messages</node>
-    <node x="214.25" y="630.0">4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.media</node>
-    <node x="296.58333333333326" y="128.0">4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.catalog_data</node>
-    <node x="328.08333333333326" y="0.0">4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.catalog</node>
+    <node x="826.2234782608693" y="685.0">4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.photo_albums</node>
+    <node x="1030.669492753623" y="621.7315890335954">4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.VIEW:site.v_requests</node>
+    <node x="519.9617391304348" y="630.0">4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.media</node>
+    <node x="332.4617391304348" y="894.0">4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.messages</node>
+    <node x="156.5" y="0.0">4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.catalog</node>
+    <node x="125.0" y="128.0">4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.catalog_data</node>
+    <node x="167.3194927536229" y="1310.0">4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.services</node>
+    <node x="803.419492753623" y="1114.0">4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.profiles</node>
+    <node x="245.76173913043448" y="366.0">4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.users</node>
+    <node x="1030.669492753623" y="400.39171374764595">4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.VIEW:site.v_users</node>
+    <node x="738.9617391304348" y="916.0">4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.photos</node>
+    <node x="197.41949275362293" y="1125.0">4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.requests</node>
+    <node x="1030.6694927536232" y="302.8029101712815">4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.VIEW:site.v_hairdressers_services</node>
   </nodes>
   <notes />
   <edges>
     <edge source="4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.messages" target="4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.users" relationship="REFERENCES">
-      <point x="29.999963302752803" y="-83.0" />
-      <point x="60.34400000000005" y="105.0" />
+      <point x="-14.999739130434818" y="-83.0" />
+      <point x="-4.799739130434489" y="105.0" />
     </edge>
     <edge source="4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.photos" target="4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.users" relationship="REFERENCES">
-      <point x="84.0" y="0.0" />
-      <point x="197.0" y="977.0" />
-      <point x="197.0" y="876.5" />
-      <point x="500.75" y="876.5" />
-      <point x="0.0" y="105.0" />
+      <point x="2.608695651815651E-4" y="61.0" />
+      <point x="822.962" y="1064.0" />
+      <point x="1004.0" y="1064.0" />
+      <point x="1004.0" y="471.0" />
+      <point x="172.00026086956547" y="0.0" />
     </edge>
     <edge source="4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.requests" target="4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.messages" relationship="REFERENCES">
-      <point x="-194.0" y="0.0" />
-      <point x="661.0" y="1186.0" />
-      <point x="661.0" y="977.0" />
-      <point x="95.4999633027528" y="0.0" />
+      <point x="-4.927536229502039E-4" y="-61.0" />
+      <point x="372.919" y="1095.0" />
+      <point x="427.962" y="1095.0" />
+      <point x="2.608695651815651E-4" y="83.0" />
+    </edge>
+    <edge source="4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.VIEW:site.v_requests" target="4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.users" relationship="REFERENCES">
+      <point x="-183.500492753623" y="0.0" />
+      <point x="1004.0" y="681.7315890335954" />
+      <point x="1004.0" y="471.0" />
+      <point x="172.00026086956547" y="0.0" />
     </edge>
     <edge source="4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.services" target="4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.catalog_data" relationship="REFERENCES">
-      <point x="-125.5" y="0.0" />
-      <point x="-6.5" y="1393.0" />
-      <point x="-6.5" y="211.0" />
-      <point x="-175.0" y="0.0" />
-    </edge>
-    <edge source="4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.services" target="4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.messages" relationship="REFERENCES">
-      <point x="14.999963302752803" y="-83.0" />
-      <point x="599.094" y="1092.5" />
-      <point x="661.0" y="1092.5" />
-      <point x="661.0" y="977.0" />
-      <point x="95.4999633027528" y="0.0" />
-    </edge>
-    <edge source="4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.photos" target="4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.media" relationship="REFERENCES">
-      <point x="0.0" y="-61.0" />
-      <point x="95.0" y="859.0" />
-      <point x="313.25" y="859.0" />
-      <point x="0.0" y="105.0" />
+      <point x="-178.5" y="15.0" />
+      <point x="134.819" y="1430.0" />
+      <point x="-165.181" y="83.0" />
     </edge>
     <edge source="4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.photos" target="4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.photo_albums" relationship="REFERENCES">
-      <point x="-15.0" y="-61.0" />
-      <point x="-32.44074923547396" y="50.0" />
+      <point x="76.5" y="-61.0" />
+      <point x="-5.761739130434535" y="50.0" />
+    </edge>
+    <edge source="4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.services" target="4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.messages" relationship="REFERENCES">
+      <point x="-178.50049275362292" y="0.0" />
+      <point x="149.819" y="1415.0" />
+      <point x="149.819" y="1095.0" />
+      <point x="427.962" y="1095.0" />
+      <point x="2.608695651815651E-4" y="83.0" />
+    </edge>
+    <edge source="4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.photos" target="4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.media" relationship="REFERENCES">
+      <point x="2.608695651815651E-4" y="-61.0" />
+      <point x="822.962" y="867.0" />
+      <point x="603.962" y="867.0" />
+      <point x="-14.999739130434818" y="105.0" />
+    </edge>
+    <edge source="4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.requests" target="4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.users" relationship="REFERENCES">
+      <point x="173.58050724637707" y="-61.0" />
+      <point x="546.5" y="1064.0" />
+      <point x="1004.0" y="1064.0" />
+      <point x="1004.0" y="471.0" />
+      <point x="172.00026086956547" y="0.0" />
     </edge>
     <edge source="4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.requests" target="4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.catalog_data" relationship="REFERENCES">
-      <point x="24.75" y="-50.0" />
-      <point x="912.5" y="609.0" />
-      <point x="893.0" y="609.0" />
-      <point x="893.0" y="211.0" />
-      <point x="174.9996666666667" y="0.0" />
-    </edge>
-    <edge source="4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.profiles" target="4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.photos" relationship="REFERENCES">
-      <point x="-47.25" y="-72.0" />
-      <point x="0.0" y="61.0" />
-    </edge>
-    <edge source="4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.profiles" target="4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.users" relationship="REFERENCES">
-      <point x="0.0" y="-72.0" />
-      <point x="142.25" y="1055.5" />
-      <point x="197.0" y="1055.5" />
-      <point x="197.0" y="876.5" />
-      <point x="500.75" y="876.5" />
-      <point x="0.0" y="105.0" />
-    </edge>
-    <edge source="4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.users" target="4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.catalog_data" relationship="REFERENCES">
-      <point x="-29.166666666666742" y="-105.0" />
+      <point x="-175.50049275362292" y="0.0" />
+      <point x="168.0" y="1186.0" />
+      <point x="168.0" y="348.5" />
+      <point x="300.0" y="348.5" />
       <point x="0.0" y="83.0" />
     </edge>
-    <edge source="4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.media" target="4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.users" relationship="REFERENCES">
-      <point x="-99.0" y="72.5" />
-      <point x="197.0" y="807.5" />
-      <point x="197.0" y="876.5" />
-      <point x="500.75" y="876.5" />
-      <point x="0.0" y="105.0" />
+    <edge source="4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.services" target="4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.users" relationship="REFERENCES">
+      <point x="178.49950724637705" y="0.0" />
+      <point x="1004.0" y="1415.0" />
+      <point x="1004.0" y="471.0" />
+      <point x="172.00026086956547" y="0.0" />
+    </edge>
+    <edge source="4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.profiles" target="4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.users" relationship="REFERENCES">
+      <point x="83.499507246377" y="0.0" />
+      <point x="1004.0" y="1186.0" />
+      <point x="1004.0" y="471.0" />
+      <point x="172.00026086956547" y="0.0" />
+    </edge>
+    <edge source="4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.profiles" target="4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.photos" relationship="REFERENCES">
+      <point x="0.0" y="-72.0" />
+      <point x="63.95775362318818" y="61.0" />
+    </edge>
+    <edge source="4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.users" target="4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.catalog_data" relationship="REFERENCES">
+      <point x="-132.76173913043448" y="-105.0" />
+      <point x="-15.0" y="83.0" />
     </edge>
     <edge source="4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.services" target="4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.requests" relationship="REFERENCES">
-      <point x="117.15596330275275" y="-83.0" />
-      <point x="-186.5" y="50.0" />
+      <point x="27.100000000000023" y="-105.0" />
+      <point x="0.0" y="61.0" />
+    </edge>
+    <edge source="4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.media" target="4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.users" relationship="REFERENCES">
+      <point x="2.608695651815651E-4" y="105.0" />
+      <point x="618.962" y="1064.0" />
+      <point x="1004.0" y="1064.0" />
+      <point x="1004.0" y="471.0" />
+      <point x="172.00026086956547" y="0.0" />
+    </edge>
+    <edge source="4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.catalog_data" target="4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.catalog_data" relationship="REFERENCES">
+      <point x="15.0" y="83.0" />
+      <point x="315.0" y="311.5" />
+      <point x="1029.669492753623" y="311.5" />
+      <point x="1029.669492753623" y="200.5" />
+      <point x="175.0" y="-10.5" />
     </edge>
     <edge source="4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.catalog_data" target="4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.catalog" relationship="REFERENCES">
       <point x="0.0" y="-83.0" />
       <point x="0.0" y="39.0" />
     </edge>
-    <edge source="4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.catalog_data" target="4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.catalog_data" relationship="REFERENCES">
-      <point x="15.0" y="83.0" />
-      <point x="486.58333333333326" y="311.5" />
-      <point x="701.25" y="311.5" />
-      <point x="701.25" y="226.0" />
-      <point x="175.0" y="15.0" />
-    </edge>
     <edge source="4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.media" target="4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.catalog_data" relationship="REFERENCES">
-      <point x="-2.0" y="-105.0" />
-      <point x="-160.33333333333326" y="83.0" />
-    </edge>
-    <edge source="4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.photo_albums" target="4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.users" relationship="REFERENCES">
-      <point x="2.507645260436675E-4" y="50.0" />
-      <point x="112.441" y="898.5" />
-      <point x="197.0" y="898.5" />
-      <point x="197.0" y="876.5" />
-      <point x="500.75" y="876.5" />
-      <point x="0.0" y="105.0" />
+      <point x="-99.0" y="0.0" />
+      <point x="149.819" y="735.0" />
+      <point x="-150.181" y="83.0" />
     </edge>
     <edge source="4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.messages" target="4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.media" relationship="REFERENCES">
-      <point x="-3.669724719657097E-5" y="-83.0" />
-      <point x="531.094" y="859.0" />
-      <point x="313.25" y="859.0" />
-      <point x="0.0" y="105.0" />
+      <point x="2.608695651815651E-4" y="-83.0" />
+      <point x="427.962" y="867.0" />
+      <point x="603.962" y="867.0" />
+      <point x="-14.999739130434818" y="105.0" />
+    </edge>
+    <edge source="4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.photo_albums" target="4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.TABLE:site.users" relationship="REFERENCES">
+      <point x="78.99952173913061" y="0.0" />
+      <point x="1004.0" y="735.0" />
+      <point x="1004.0" y="471.0" />
+      <point x="172.00026086956547" y="0.0" />
     </edge>
   </edges>
-  <settings layout="Hierarchic" zoom="0.827673796791444" showDependencies="false" x="519.873206214093" y="619.318042319496" />
-  <SelectedNodes />
+  <settings layout="Hierarchic" zoom="0.7696869355809752" showDependencies="false" x="1145.9679299151317" y="684.9454417458642" />
+  <SelectedNodes>
+    <node>4fc384bb-ea4c-4ec4-972f-20bcd4982ad1.VIEW:site.v_requests</node>
+  </SelectedNodes>
   <Categories>
     <Category>Columns</Category>
     <Category>Comments</Category>
