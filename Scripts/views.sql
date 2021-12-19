@@ -17,7 +17,20 @@ SELECT r.id, c.value_print AS request_name, r.user_id, CONCAT(u.firstname, ' ', 
 FROM requests r
          JOIN users u ON r.user_id = u.id
          JOIN catalog_data c ON c.id_catalog = 3 AND r.type_id = c.id;
-
 SELECT *
 FROM v_requests;
+-- таблица пользователей
+DROP VIEW IF EXISTS v_users;
+CREATE VIEW v_users AS
+SELECT u.id,
+       cd.value_print,
+       firstname,
+       lastname,
+       phone,
+       email,
+       created_at,
+       updated_at
+FROM users u
+         JOIN catalog_data cd on u.user_type_id = cd.id;
+SELECT * FROM v_users;
 

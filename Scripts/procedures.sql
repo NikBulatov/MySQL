@@ -36,6 +36,7 @@ SELECT *
 FROM services
 ORDER BY id DESC
 LIMIT 1;
+-- добавление нового пользователя
 DROP PROCEDURE IF EXISTS add_new_user;
 DELIMITER //
 CREATE PROCEDURE add_new_user(firstname VARCHAR(255),
@@ -53,7 +54,7 @@ BEGIN
     INSERT INTO profiles (gender) VALUE (@gender);
 END//
 DELIMITER ;
-CALL add_new_user('Michael', 'Dubrovsky', '+7(930)816-40-55', 'misha.d@example.com', 'm');
+CALL add_new_user('Michael', 'Dubrovsky', '+7(930)816-40-56', 'misha.d@example.com', 'm');
 SELECT *
 FROM users
 ORDER BY id DESC
